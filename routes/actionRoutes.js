@@ -15,8 +15,8 @@ route.get('/', (req, res) => {
 })
 
 route.get('/:id', (req, res) => {
-    const {id} = req.params;
-    actionModel.get(id)
+    const {project_id} = req.params;
+    actionModel.get(project_id)
     .then(action => {
         res.status(200).json(action)
     })
@@ -30,9 +30,9 @@ route.post('/', (req, res) => {
     if( project_id.length === 0 || description.length === 0 || notes.length === 0) {
         return res.status(400).json({ error: 'A action id, description, and notes are required to submit a new action.'})
     } else {
-        actionModel.insert({action})
+        actionModel.insert({project_id, description, notes})
         .then(action => {
-            res.status(200)
+            res.status(200).json({message: 'complete'})
         })
         .catch(err => {
             res.status(500).json({ message: 'Unable to create a new action, please try again.'})
